@@ -4,6 +4,6 @@ public interface Constants {
         public static final int[] DRIVEBASE_IDS = new int[] {7,8,9,10,11,12};    
     }
     public interface DriveConstants {
-        public static final double RAW_DRIVE_FULL_POWER = 0.2;
+        public static final double RAW_DRIVE_FULL_POWER = 0.8;
     }
 }

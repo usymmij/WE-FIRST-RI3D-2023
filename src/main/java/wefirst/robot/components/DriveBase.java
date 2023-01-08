@@ -60,4 +60,12 @@ public class DriveBase {
         leftMotors[0].set(ControlMode.PercentOutput, left * Constants.DriveConstants.RAW_DRIVE_FULL_POWER);
         rightMotors[0].set(ControlMode.PercentOutput, right * Constants.DriveConstants.RAW_DRIVE_FULL_POWER);
     }
+
+    public static void arcade(double accel, double turning) {
+        rawDrive(accel + turning, accel - turning);
+    }
+
+    public static void rotate(double rotation) {
+        rawDrive(rotation, -rotation);
+    }
 }

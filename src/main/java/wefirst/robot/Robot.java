@@ -7,15 +7,24 @@ package wefirst.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import wefirst.robot.components.DriveBase;
+import edu.wpi.first.wpilibj.GenericHID;
 
 public class Robot extends TimedRobot {
-  private Command m_autonomousCommand;
 
+  private static final boolean mouseControl = true;
+
+  private Command m_autonomousCommand;
+  private GenericHID controller = new GenericHID(0);
   private RobotContainer m_robotContainer;
+
+  private double turning;
+  private double accel;
 
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
+    DriveBase.init(Constants.IDConstants.DRIVEBASE_IDS);
   }
 
   @Override
@@ -39,6 +48,7 @@ public class Robot extends TimedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
     }
+
   }
 
   @Override
@@ -55,7 +65,17 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    if(mouseControl) {
+      turning = controller.getRawAxis(0);
+      accel = controller.getRawButton(6) ? 1 : controller.getRawButton(8) ? -1 : 0; // W, S
+      DriveBase.arcade(accel, turning);
+      if(accel == 0) {
+        DriveBase.rotate((controller.getRawButton(7) ? -1 :0) + (controller.getRawButton(9) ? 1 : 0));
+      }
+   }
+
+  }
 
   @Override
   public void teleopExit() {}
